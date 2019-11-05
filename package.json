@@ -1,0 +1,15 @@
+{
+  "name": "thymeleaf-app",
+  "version": "1.0.0",
+  "dependencies": {
+    "clientside-require": "^4.7.2",
+    "email-existence": "^0.1.6",
+    "email-validation-pro": "^1.0.2",
+    "validator": "latest",
+    "validator-js": "^0.2.1"
+  },
+  "devDependencies": {
+    "js-sha256": "^0.9.0",
+    "validate.js": "^0.13.1"
+  }
+}

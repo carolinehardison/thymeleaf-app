@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+<head>
+    <script type="text/javascript" src="/webjars/jquery/3.4.1/jquery.min.js"></script>
+    <link href="/webjars/bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet"/>
+    <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../static/js/students.js" th:src="@{/js/students.js}"></script>
+    <title>Students</title>
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Student Directory</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add New</button>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0" th:action="@{/students/search}">
+            <input id="search" class="form-control mr-sm-2" type="search" name="search" th:value="${search}" aria-label="Search" onchange="submit">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+
+
+
+
+<table class="table table-stripped">
+    <thead>
+    <tr>
+        <td>Id</td>
+        <td>Name</td>
+        <td>Department</td>
+        <td>Updated By</td>
+        <td>Updated On</td>
+        <td></td>
+        <td></td>
+    </tr>
+    </thead>
+    <tr th:each="student: ${students}">
+        <td th:text="${student.Id}">Id</td>
+        <td th:text="${student.name}">Name</td>
+        <td th:text="${student.department}">Department</td>
+        <td th:text="${student.updatedBy}">Updated By</td>
+        <td th:text="${student.updatedOn}">Updated On</td>
+        <td><a th:href="@{/students/getOne/(Id=${student.Id})}" id="editButton" class="btn btn-warning" >Edit</a></td>
+        <td><a th:href="@{/students/getOne/(Id=${student.Id})}" id="deleteButton" class="btn btn-danger" >Delete</a></td>
+<!--        <td><a th:href="@{/students/delete/(Id=${student.Id})}" id="deleteButton" class="btn btn-danger" >Delete</a></td>-->
+
+    </tr>
+</table>
+
+
+
+<!--ADD MODAL-->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form th:action="@{/students/addNew}" method="POST">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New Student</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="form-group">
+                        <label for="name" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="name" name="name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="department" class="col-form-label">Department:</label>
+                        <input type="text" class="form-control" id="department" name="department">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="updatedBy" class="col-form-label">Updated By:</label>
+                        <input type="text" class="form-control" id="updatedBy" name="updatedBy">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--EDIT MODAL-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form th:action="@{/students/update}" method="PUT">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel2">Edit Student</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" class="form-control" id="idEdit" name="Id">
+
+
+                    <div class="form-group">
+                        <label for="nameEdit" class="col-form-label">Name:</label>
+                        <input type="text" class="form-control" id="nameEdit" name="name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="departmentEdit" class="col-form-label">Department:</label>
+                        <input type="text" class="form-control" id="departmentEdit" name="department">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="updatedByEdit" class="col-form-label">Updated By:</label>
+                        <input type="text" class="form-control" id="updatedByEdit" name="updatedBy">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--DELETE MODAL-->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form th:action="@{/students/delete}" method="PUT">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div align="center">
+                    <table class="table table-stripped">
+                        <tbody><tr>
+                            <th><h5 align="center" id="exampleModalLabel3" class="modal-title">Are you sure you want to delete <span id="studentDelete"></span>?</h5></th>
+                            <th align="left"><button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button></th>
+                        </tr>
+                        </tbody></table>
+
+
+                    <input type="hidden" class="form-control" id="idDelete" name="Id" value="12">
+
+                </div>
+                <div style="margin:10px;" align="center">
+                    <div align="center">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
